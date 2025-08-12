@@ -1,0 +1,83 @@
+
+clc;
+clear;
+close all;
+
+%% 1. Definição de todos os Polos e Zeros
+
+% Usaremos uma estrutura para organizar todos os sistemas
+systems = {};
+
+% --- Sistema 1: Original de 3ª Ordem (Malha Aberta) ---
+systems{1}.poles = [-2.595+5j, -2.595-5j, -12.19];
+systems{1}.zeros = [];
+systems{1}.name  = 'Original 3ª Ordem (MA)';
+systems{1}.color = [0.8500, 0.3250, 0.0980]; % Laranja
+systems{1}.marker = 'x';
+
+% --- Sistema 2: Reduzido de 2ª Ordem (Malha Aberta) ---
+systems{2}.poles = [-2.5957+5j, -2.5957-5j];
+systems{2}.zeros = [];
+systems{2}.name  = 'Reduzido 2ª Ordem (MA)';
+systems{2}.color = [0, 0.4470, 0.7410]; % Azul
+systems{2}.marker = 's';
+
+% --- Sistema 3: Reduzido (Malha Fechada) ---
+systems{3}.poles = [0 + 2.9257e5j, 0 - 2.9257e5j]; 
+systems{3}.zeros = [];
+systems{3}.name  = 'Reduzido (MF)';
+systems{3}.color = [0.4660, 0.6740, 0.1880]; % Verde
+systems{3}.marker = 'x';
+
+
+%% 2. Geração da Figura Única com Subplots
+
+% Cria a figura que vai conter os dois subplots
+figure('Position', [100, 100, 1200, 600]); % Figura mais larga
+sgtitle('Mapa de Polos Comparativo', 'FontSize', 16, 'FontWeight', 'bold');
+
+% --- Subplot 1: Comparativo dos Sistemas em Malha Aberta ---
+subplot(1, 2, 1); % Ativa o primeiro subplot (1 linha, 2 colunas, posição 1)
+hold on;
+grid on;
+
+% Plota os polos do Sistema 1
+p1 = plot(real(systems{1}.poles), imag(systems{1}.poles), systems{1}.marker, ...
+    'Color', systems{1}.color, 'MarkerSize', 12, 'LineWidth', 2);
+
+% Plota os polos do Sistema 2
+p2 = plot(real(systems{2}.poles), imag(systems{2}.poles), systems{2}.marker, ...
+    'Color', systems{2}.color, 'MarkerSize', 12, 'LineWidth', 2);
+
+% Configuração do Subplot 1
+title('Sistemas em Malha Aberta (Zoom)');
+xlabel('Eixo Real');
+ylabel('Eixo Imaginário');
+legend([p1, p2], {systems{1}.name, systems{2}.name}, 'Location', 'best');
+ax1 = gca;
+ax1.XAxisLocation = 'origin';
+ax1.YAxisLocation = 'origin';
+axis equal;
+xlim([-15, 5]);
+ylim([-10, 10]);
+hold off;
+
+
+% --- Subplot 2: Polos do Sistema Reduzido em Malha Fechada ---
+subplot(1, 2, 2); % Ativa o segundo subplot (1 linha, 2 colunas, posição 2)
+hold on;
+grid on;
+
+% Plota os polos do Sistema 3
+p3 = plot(real(systems{3}.poles), imag(systems{3}.poles), systems{3}.marker, ...
+    'Color', systems{3}.color, 'MarkerSize', 12, 'LineWidth', 2);
+
+% Configuração do Subplot 2
+title('Sistema Reduzido (Malha Fechada)');
+xlabel('Eixo Real');
+ylabel('Eixo Imaginário');
+legend(p3, systems{3}.name, 'Location', 'best');
+ax2 = gca;
+ax2.XAxisLocation = 'origin';
+ax2.YAxisLocation = 'origin';
+hold off;
