@@ -88,7 +88,7 @@ for i = 1:length(params_to_vary)
     nominal_val = nominal_values{i};
     val_minus = nominal_val * (1 - variation);
     val_plus = nominal_val * (1 + variation);
-    if nominal_val > 1000, format_str = '%.2e'; else, format_str = '%.3f'; end
+    if nominal_val > 1000, format_str = '%.2e'; else, format_str = '%.2e'; end
     text_info = {
         sprintf('Nominal: %s = %s', param_names_str{i}, num2str(nominal_val, format_str)),
         sprintf('-15%%: %s = %s', param_names_str{i}, num2str(val_minus, format_str)),
